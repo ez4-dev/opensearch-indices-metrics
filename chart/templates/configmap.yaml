@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "opensearch-metrics.fullname" . }}
+  labels:
+    {{- include "opensearch-metrics.labels" . | nindent 4 }}
+type: Opaque
+data:
+  OPENSEARCH_HOST: {{ .Values.opensearch.host | quote }}
+  INDEX_PATTERN_REGEX: {{ .Values.opensearch.indexPatternRegex | quote }}
+  METRICS_UPDATE_INTERVAL: {{ .Values.opensearch.metricsUpdateInterval | quote }}

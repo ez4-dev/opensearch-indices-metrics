@@ -10,10 +10,16 @@ spec:
       {{- include "opensearch-metrics.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        # This is for setting the Prometheus scrape annotation
+        prometheus.io/scrape: "true"
+        # This is for setting the Prometheus scrape port annotation
+        prometheus.io/port: {{ .Values.service.port | quote }}
+        # This is for setting the Prometheus scrape path annotation
+        prometheus.io/path: "/metrics"
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "opensearch-metrics.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
@@ -40,6 +46,14 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "opensearch-metrics.fullname" . }}
+            - secretRef:
+                name: {{ include "opensearch-metrics.fullname" . }}
+          env:
+            - name: PORT
+              value: "{{ .Values.service.port }}"
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
