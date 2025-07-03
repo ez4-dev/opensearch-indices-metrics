@@ -10,7 +10,9 @@
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal",
-      "env": {}
+      "env": {
+        "PORT": "3000"
+      }
     }
   ]
 }

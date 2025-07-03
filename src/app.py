@@ -14,6 +14,9 @@ DOCS_DELETED = "docs.deleted"
 STORE_SIZE = "store.size"
 PRI_STORE_SIZE = "pri.store.size"
 
+# Environment variable for the port to run the Prometheus metrics server
+PORT_STR=os.environ.get('PORT', '3000')
+
 # Environment variables for OpenSearch connection
 OPENSEARCH_HOST = os.environ.get('OPENSEARCH_HOST', 'http://your-opensearch-host:9200')
 OPENSEARCH_USER = os.environ.get('OPENSEARCH_USER', 'admin')
@@ -108,6 +111,6 @@ if __name__ == '__main__':
     )
     scheduler.start()
 
-    server, t = start_http_server(port=os.environ.get('PORT', 3000))
+    server, t = start_http_server(port=int(PORT_STR))
     # server.shutdown()
     t.join()
