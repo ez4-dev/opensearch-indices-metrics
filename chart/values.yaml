@@ -23,8 +23,10 @@ fullnameOverride: ""
 opensearch:
   # The OpenSearch host URL.
   host: "http://opensearch:9200"
-  # The OpenSearch user for authentication
-  indexPatternRegex: ^(.+)(-[0-9]{4}\\.[0-9]{2}\\.[0-9]{2})$
+  # The regex pattern to group OpenSearch index names. The first match group will be used as label index_group.
+  # Following regex group all indices with the same name and appended by the date suffix.
+  # For example, if you have indices like "logs-2023.10.01", "logs-2023.10.02", etc., this regex will group them under "logs".
+  indexPatternRegex: ^(.+)(-[0-9]{4}\.[0-9]{2}\.[0-9]{2})$
   # Update interval for metrics in minutes
   metricsUpdateInterval: 30
   # The OpenSearch user for authentication

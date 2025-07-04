@@ -1,6 +1,10 @@
 # Use the official Python image from the Docker Hub
 FROM python:3-alpine
 
+RUN apk add --no-cache tzdata
+# Set the timezone to UTC
+ENV TZ=UTC
+
 # Set the working directory
 WORKDIR /app
 

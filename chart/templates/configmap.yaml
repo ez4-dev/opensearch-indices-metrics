@@ -4,8 +4,13 @@ metadata:
   name: {{ include "opensearch-metrics.fullname" . }}
   labels:
     {{- include "opensearch-metrics.labels" . | nindent 4 }}
-type: Opaque
 data:
-  OPENSEARCH_HOST: {{ .Values.opensearch.host | quote }}
-  INDEX_PATTERN_REGEX: {{ .Values.opensearch.indexPatternRegex | quote }}
-  METRICS_UPDATE_INTERVAL: {{ .Values.opensearch.metricsUpdateInterval | quote }}
+{{- with .Values.opensearch }}
+  OPENSEARCH_HOST: {{ .host | quote }}
+  {{- if .indexPatternRegex }}
+  INDEX_PATTERN_REGEX: {{ .indexPatternRegex | quote }}
+  {{- end }}
+  {{- if .metricsUpdateInterval }}
+  METRICS_UPDATE_INTERVAL: {{ .metricsUpdateInterval | quote }}
+  {{- end }}
+{{- end }}
